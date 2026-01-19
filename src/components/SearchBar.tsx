@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
+import styles from './SearchBar.module.css';
 
 interface SearchBarProps {
   onSearch: (city: string) => void;
@@ -17,16 +18,16 @@ export const SearchBar = ({ onSearch, isLoading }: SearchBarProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="search-bar">
+    <form onSubmit={handleSubmit} className={styles.searchBar}>
       <input
         type="text"
         value={city}
         onChange={(e) => setCity(e.target.value)}
         placeholder="Enter city name..."
         disabled={isLoading}
-        className="search-input"
+        className={styles.input}
       />
-      <button type="submit" disabled={isLoading || !city.trim()} className="search-button">
+      <button type="submit" disabled={isLoading || !city.trim()} className={styles.button}>
         {isLoading ? 'Loading...' : 'Search'}
       </button>
     </form>

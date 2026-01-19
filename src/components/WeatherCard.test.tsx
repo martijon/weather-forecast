@@ -81,7 +81,8 @@ describe('WeatherCard', () => {
     renderWithRouter(<WeatherCard forecast={mockForecast} isToday={true} />);
 
     const card = screen.getByRole('button');
-    expect(card).toHaveClass('weather-card-today');
+    // CSS Modules generate hashed class names like _cardToday_46dfb8
+    expect(card.className).toMatch(/cardToday/);
   });
 
   it('should be keyboard accessible', async () => {

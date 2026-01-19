@@ -9,6 +9,7 @@ import {
   getCityByCoordinates,
 } from '../services/weatherService';
 import { getCurrentPosition } from '../services/geolocationService';
+import styles from './WeatherForecast.module.css';
 
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || '';
 
@@ -97,7 +98,7 @@ export const WeatherForecast = () => {
     <>
       <SearchBar onSearch={handleSearch} isLoading={isLoading} />
 
-      {error && <div className="error-message">{error}</div>}
+      {error && <div className={styles.errorMessage}>{error}</div>}
 
       {forecasts.length > 0 && cityInfo && (
         <ForecastList
@@ -108,13 +109,13 @@ export const WeatherForecast = () => {
       )}
 
       {!error && forecasts.length === 0 && !isLoading && !isInitialLoad && (
-        <div className="empty-state">
+        <div className={styles.emptyState}>
           <p>Enter a city name to see the weather forecast</p>
         </div>
       )}
 
       {isInitialLoad && (
-        <div className="empty-state">
+        <div className={styles.emptyState}>
           <p>📍 Getting your location...</p>
         </div>
       )}
