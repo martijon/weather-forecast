@@ -13,10 +13,11 @@ export const ForecastList = ({ forecasts, cityName, country }: ForecastListProps
       <h2 className="forecast-title">
         5-Day Forecast for {cityName}, {country}
       </h2>
+      <p className="forecast-subtitle">Click on a day to see hourly details</p>
       <div className="forecast-grid">
         {forecasts.map((forecast, index) => (
           <WeatherCard
-            key={forecast.date.toISOString()}
+            key={forecast.dateKey}
             forecast={forecast}
             isToday={index === 0}
           />

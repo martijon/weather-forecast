@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import type { DayForecast } from '../types/weather';
 import { getWeatherIconUrl } from '../services/weatherService';
 
@@ -7,8 +8,20 @@ interface WeatherCardProps {
 }
 
 export const WeatherCard = ({ forecast, isToday = false }: WeatherCardProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/day/${forecast.dateKey}`, { state: { day: forecast } });
+  };
+
   return (
-    <div className={`weather-card ${isToday ? 'weather-card-today' : ''}`}>
+    <div
+      className={`weather-card ${isToday ? 'weather-card-today' : ''}`}
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+    >
       <div className="weather-card-header">
         <span className="weather-day">{isToday ? 'Today' : forecast.dayName}</span>
         <span className="weather-date">

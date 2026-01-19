@@ -56,8 +56,20 @@ export interface ForecastResponse {
   city: City;
 }
 
+export interface HourlyForecast {
+  time: string;
+  temp: number;
+  feelsLike: number;
+  humidity: number;
+  description: string;
+  icon: string;
+  wind: number;
+  pop: number;
+}
+
 export interface DayForecast {
   date: Date;
+  dateKey: string;
   dayName: string;
   temp: number;
   tempMin: number;
@@ -66,4 +78,5 @@ export interface DayForecast {
   description: string;
   icon: string;
   wind: number;
+  hourly: HourlyForecast[];
 }

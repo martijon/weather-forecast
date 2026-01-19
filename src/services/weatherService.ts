@@ -1,4 +1,4 @@
-import type { ForecastResponse, DayForecast } from '../types/weather';
+import type { ForecastResponse, DayForecast, HourlyForecast } from '../types/weather';
 
 const API_BASE_URL = 'https://api.openweathermap.org/data/2.5';
 const GEO_API_URL = 'https://api.openweathermap.org/geo/1.0';
@@ -54,9 +54,21 @@ export const processForecastData = (data: ForecastResponse): DayForecast[] => {
     const date = new Date(item.dt * 1000);
     const dateKey = date.toISOString().split('T')[0];
     
+    const hourlyItem: HourlyForecast = {
+      time: date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
+      temp: item.main.temp,
+      feelsLike: item.main.feels_like,
+      humidity: item.main.humidity,
+      description: item.weather[0].description,
+      icon: item.weather[0].icon,
+      wind: item.wind.speed,
+      pop: Math.round(item.pop * 100),
+    };
+    
     if (!dailyMap.has(dateKey)) {
       dailyMap.set(dateKey, {
         date,
+        dateKey,
         dayName: date.toLocaleDateString('en-US', { weekday: 'short' }),
         temp: item.main.temp,
         tempMin: item.main.temp_min,
@@ -65,11 +77,13 @@ export const processForecastData = (data: ForecastResponse): DayForecast[] => {
         description: item.weather[0].description,
         icon: item.weather[0].icon,
         wind: item.wind.speed,
+        hourly: [hourlyItem],
       });
     } else {
       const existing = dailyMap.get(dateKey)!;
       existing.tempMin = Math.min(existing.tempMin, item.main.temp_min);
       existing.tempMax = Math.max(existing.tempMax, item.main.temp_max);
+      existing.hourly.push(hourlyItem);
       
       // Use midday forecast for main display if available
       const hour = date.getHours();
