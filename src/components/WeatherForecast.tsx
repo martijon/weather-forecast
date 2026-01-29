@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import type { DayForecast } from '../types/weather';
 import { SearchBar } from './SearchBar';
 import { ForecastList } from './ForecastList';
+import { FavoritesList } from './FavoritesList';
 import {
   getCoordinatesByCity,
   getForecast,
@@ -96,7 +97,8 @@ export const WeatherForecast = () => {
 
   return (
     <>
-      <SearchBar onSearch={handleSearch} isLoading={isLoading} />
+      <SearchBar onSearch={handleSearch} isLoading={isLoading} currentCity={cityInfo} />
+      <FavoritesList onSelectCity={handleSearch} />
 
       {error && <div className={styles.errorMessage}>{error}</div>}
 

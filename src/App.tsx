@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { WeatherForecast } from './components/WeatherForecast';
 import { DayDetails } from './pages/DayDetails';
+import { FavoritesProvider } from './context/FavoritesContext';
 import './App.css';
 
 const App = () => (
+  <FavoritesProvider>
   <BrowserRouter>
     <div className="app">
       <Routes>
@@ -28,6 +30,7 @@ const App = () => (
       </Routes>
     </div>
   </BrowserRouter>
+  </FavoritesProvider>
 );
 
 export default App;
