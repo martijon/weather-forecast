@@ -97,7 +97,7 @@ export const WeatherForecast = () => {
 
   return (
     <>
-      <SearchBar onSearch={handleSearch} isLoading={isLoading} currentCity={cityInfo} />
+      <SearchBar onSearch={handleSearch} isLoading={isLoading} />
       <FavoritesList onSelectCity={handleSearch} />
 
       {error && <div className={styles.errorMessage}>{error}</div>}

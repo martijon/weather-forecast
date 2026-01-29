@@ -2,15 +2,10 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SearchBar } from './SearchBar';
-import { FavoritesProvider } from '../context/FavoritesContext';
-
-const renderWithProvider = (ui: React.ReactElement) => {
-  return render(<FavoritesProvider>{ui}</FavoritesProvider>);
-};
 
 describe('SearchBar', () => {
   it('should render input and button', () => {
-    renderWithProvider(<SearchBar onSearch={vi.fn()} isLoading={false} />);
+    render(<SearchBar onSearch={vi.fn()} isLoading={false} />);
 
     expect(screen.getByPlaceholderText('Enter city name...')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Search' })).toBeInTheDocument();
@@ -20,7 +15,7 @@ describe('SearchBar', () => {
     const user = userEvent.setup();
     const onSearch = vi.fn();
 
-    renderWithProvider(<SearchBar onSearch={onSearch} isLoading={false} />);
+    render(<SearchBar onSearch={onSearch} isLoading={false} />);
 
     const input = screen.getByPlaceholderText('Enter city name...');
     await user.type(input, 'Sofia');
@@ -33,7 +28,7 @@ describe('SearchBar', () => {
     const user = userEvent.setup();
     const onSearch = vi.fn();
 
-    renderWithProvider(<SearchBar onSearch={onSearch} isLoading={false} />);
+    render(<SearchBar onSearch={onSearch} isLoading={false} />);
 
     const input = screen.getByPlaceholderText('Enter city name...');
     await user.type(input, '  London  ');
@@ -46,7 +41,7 @@ describe('SearchBar', () => {
     const user = userEvent.setup();
     const onSearch = vi.fn();
 
-    renderWithProvider(<SearchBar onSearch={onSearch} isLoading={false} />);
+    render(<SearchBar onSearch={onSearch} isLoading={false} />);
 
     await user.click(screen.getByRole('button', { name: 'Search' }));
 
@@ -54,14 +49,14 @@ describe('SearchBar', () => {
   });
 
   it('should disable input and button when loading', () => {
-    renderWithProvider(<SearchBar onSearch={vi.fn()} isLoading={true} />);
+    render(<SearchBar onSearch={vi.fn()} isLoading={true} />);
 
     expect(screen.getByPlaceholderText('Enter city name...')).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Loading...' })).toBeDisabled();
   });
 
   it('should disable button when input is empty', () => {
-    renderWithProvider(<SearchBar onSearch={vi.fn()} isLoading={false} />);
+    render(<SearchBar onSearch={vi.fn()} isLoading={false} />);
 
     expect(screen.getByRole('button', { name: 'Search' })).toBeDisabled();
   });
@@ -69,7 +64,7 @@ describe('SearchBar', () => {
   it('should enable button when input has value', async () => {
     const user = userEvent.setup();
 
-    renderWithProvider(<SearchBar onSearch={vi.fn()} isLoading={false} />);
+    render(<SearchBar onSearch={vi.fn()} isLoading={false} />);
 
     const input = screen.getByPlaceholderText('Enter city name...');
     await user.type(input, 'Paris');
