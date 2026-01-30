@@ -3,6 +3,7 @@ import type { DayForecast } from '../types/weather';
 import { SearchBar } from './SearchBar';
 import { ForecastList } from './ForecastList';
 import { FavoritesList } from './FavoritesList';
+import { AutoRefresh } from './AutoRefresh';
 import {
   getCoordinatesByCity,
   getForecast,
@@ -17,6 +18,7 @@ const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || '';
 export const WeatherForecast = () => {
   const [forecasts, setForecasts] = useState<DayForecast[]>([]);
   const [cityInfo, setCityInfo] = useState<{ name: string; country: string } | null>(null);
+  const [lastSearchedCity, setLastSearchedCity] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
@@ -86,6 +88,7 @@ export const WeatherForecast = () => {
 
       setForecasts(processedData);
       setCityInfo({ name: coords.name, country: coords.country });
+      setLastSearchedCity(coords.name);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch weather data';
       setError(message);
@@ -99,6 +102,12 @@ export const WeatherForecast = () => {
     <>
       <SearchBar onSearch={handleSearch} isLoading={isLoading} />
       <FavoritesList onSelectCity={handleSearch} />
+      {lastSearchedCity && (
+        <AutoRefresh
+          onRefresh={() => handleSearch(lastSearchedCity)}
+          disabled={isLoading}
+        />
+      )}
 
       {error && <div className={styles.errorMessage}>{error}</div>}
 
